@@ -15,47 +15,47 @@ def homepage():
 
 @app.route('/login')
 def login():
-    return 'página de login'
+    return 'Login page'
 
 
-@app.route('/agendamentos')
-def agendamentos_lista():
-    return 'lista de agendamentos'
+@app.route('/booking')
+def booking():
+    return 'booking services'
 
 
-@app.route('/agendamentos/novo')
-def agendamento_cadastro():
-    return 'cadastro agendamento'
+@app.route('/booking/new')
+def schedules_new():
+    return 'Booking a new service'
 
 
-@app.route('/clientes')
-def clientes_lista():
-    return 'lista clientes'
+@app.route('/customers')
+def customers():
+    return 'Customers list'
 
 
-@app.route('/clientes/novo')
-def clientes_cadastro():
-    return 'cadastro clientes'
+@app.route('/customers/new')
+def customers_new():
+    return 'Add a new customer'
 
 
-@app.route('/veiculos')
-def veiculos_lista():
-    return 'lista de veículos'
+@app.route('/vehicles')
+def vehicles():
+    return 'Vehicles list'
 
 
-@app.route('/veiculos/novo')
-def veiculos_cadastro():
-    return 'cadastro de veículos'
+@app.route('/vehicles/new')
+def vehicles_new():
+    return 'Add a new vehicle'
 
 
-@app.route('/servicos')
-def servicos_lista():
-    return 'lita de serviços'
+@app.route('/services')
+def services():
+    return 'Services list'
 
 
-@app.route('/servicos/novo')
-def servicos_cadastro():
-    return 'cadastro de serviços'
+@app.route('/services/new')
+def services_new():
+    return 'Add a new services'
 
 
 if __name__ == "__main__":
