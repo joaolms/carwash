@@ -1,8 +1,15 @@
-from carwash import database
+from carwash import database, login_manager
 from datetime import datetime, timezone
+from flask_login import UserMixin
 
 
-class User(database.Model):
+# Fetch the user from database
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+class User(database.Model, UserMixin):
     id = database.Column(database.Integer, primary_key=True)
     name = database.Column(database.String, nullable=False)
     username = database.Column(database.String(80), nullable=False, unique=True)
