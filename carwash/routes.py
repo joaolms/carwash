@@ -14,6 +14,11 @@ def homepage():
     formlogin = FormLogin()
     return render_template("main.html", form=formlogin)
 
+@app.route('/user')
+# @login_required
+def users():
+    return render_template('user/list.html')
+
 
 @app.route('/user/new', methods=["GET", "POST"])
 def new_user():
@@ -24,7 +29,7 @@ def new_user():
 @app.route('/booking')
 # @login_required
 def booking():
-    return 'booking services'
+    return render_template('booking/list.html')
 
 
 @app.route('/booking/new')
@@ -33,22 +38,10 @@ def schedules_new():
     return 'Booking a new service'
 
 
-@app.route('/customers')
-# @login_required
-def customers():
-    return 'Customers list'
-
-
-@app.route('/customers/new')
-@login_required
-def customers_new():
-    return 'Add a new customer'
-
-
 @app.route('/vehicles')
 # @login_required
 def vehicles():
-    return 'Vehicles list'
+    return render_template('vehicle/list.html')
 
 
 @app.route('/vehicles/new')
@@ -60,7 +53,7 @@ def vehicles_new():
 @app.route('/services')
 # @login_required
 def services():
-    return 'Services list'
+    return render_template('service/list.html')
 
 
 @app.route('/services/new')
