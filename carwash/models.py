@@ -18,11 +18,13 @@ class User(database.Model, UserMixin):
     image = database.Column(database.String, default="user_default.png")
     vehicles = database.relationship("vehicle", backref="user", lazy=True)
 
+
 class Vehicle(database.Model):
     plate = database.Column(database.String(10), primary_key=True, unique=False, nullable=False)
     model = database.Column(database.String(30), nullable=False)
     year = database.Column(database.Integer)
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
+
 
 class Booking(database.Model):
     id = database.Column(database.Integer, primary_key=True)

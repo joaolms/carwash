@@ -14,6 +14,7 @@ def homepage():
     formlogin = FormLogin()
     return render_template("main.html", form=formlogin)
 
+
 @app.route('/user')
 # @login_required
 def users():

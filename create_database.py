@@ -3,4 +3,4 @@ from carwash.models import User, Vehicle, Booking
 
 # Create database carwash.db
 with app.app_context():
-  database.create_all()
+    database.create_all()

@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
+from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 from carwash.models import User
+
 
 class FormLogin(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -11,8 +12,8 @@ class FormLogin(FlaskForm):
 
 class FormNewUser(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
-    username = StringField("Username", validators=[DataRequired(), Length(3,12)])
-    password = PasswordField("Password", validators=[DataRequired(), Length(6,20)])
+    username = StringField("Username", validators=[DataRequired(), Length(3, 12)])
+    password = PasswordField("Password", validators=[DataRequired(), Length(6, 20)])
     password_confirmation = PasswordField("Password confirmation", validators=[DataRequired(), EqualTo("password", message="Passwords must match")])
     phone_number = StringField("Phone number")
     confirmation_button = SubmitField("Create")
