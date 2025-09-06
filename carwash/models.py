@@ -1,9 +1,11 @@
 from carwash import database, login_manager
 from datetime import datetime, timezone
+
+# UserMixin tell to the app which class is management the login process
 from flask_login import UserMixin
 
 
-# Fetch the user from database
+# Fetch the user from database by ID
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

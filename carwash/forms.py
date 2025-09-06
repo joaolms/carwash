@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 from carwash.models import User
 
@@ -19,9 +19,10 @@ class FormNewUser(FlaskForm):
     confirmation_button = SubmitField("Create")
 
     # Validate if username is unique
-    # The name of this function have to be VALIDATE_ + FIELD_NAME.
-    # It will be used by validate on submit function on the routes
+    # The name of this function HAVE TO be VALIDATE_ + FIELD_NAME.
+    # It will be used by validate_on_submit function on the routes
+    # this function will be executed automatically with validate_on_submit()
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
-            return ValidationError("Username already exists")
+            return ValidationError("Username already exists.")
