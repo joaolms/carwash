@@ -18,7 +18,7 @@ class User(database.Model, UserMixin):
     password = database.Column(database.String(120), nullable=False)
     phone = database.Column(database.String(20), nullable=False)
     image = database.Column(database.String, default="user_default.png")
-    vehicles = database.relationship("vehicle", backref="user", lazy=True)
+    # vehicles = database.relationship("vehicle", backref="user", lazy=True)
 
 
 class Vehicle(database.Model):
