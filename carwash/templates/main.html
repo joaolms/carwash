@@ -3,29 +3,13 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="text-center">Login</h3>
-            </div>
-            <div class="card-body">
-                <form method="POST">
-                    {{ form.csrf_token }}
-                    <div class="mb-3">
-                        {{ form.username.label(class="form-label") }}
-                        {{ form.username(class="form-control") }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control") }}
-                    </div>
-                    <div class="d-grid">
-                        {{ form.confirmation_button(class="btn btn-primary", value="Login", type="submit") }}
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="text-center">
+    <h1>Welcome to the Carwash system</h1>
+    <p class="lead">Vehicle wash management system</p>
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('booking') }}" class="btn btn-primary">List booking</a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+    {% endif %}
 </div>
 {% endblock %}

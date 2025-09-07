@@ -18,7 +18,7 @@ app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 ## If not logged in, the user will be redirected to the homepage
-login_manager.login_view = 'homepage'
+login_manager.login_view = 'login'
 
 
 from carwash import routes

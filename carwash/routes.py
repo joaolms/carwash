@@ -10,6 +10,11 @@ def page_not_found(err):
     return render_template('404.html'), 404
 
 
+@app.route('/', methods=["GET"])
+def homepage():
+    return render_template("main.html")
+
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -17,8 +22,8 @@ def logout():
     return redirect(url_for('homepage'))
 
 
-@app.route('/', methods=["GET", "POST"])
-def homepage():
+@app.route('/login', methods=["GET", "POST"])
+def login():
     formlogin = FormLogin()
 
     # Check if login form is valid
@@ -31,11 +36,11 @@ def homepage():
         ## and the password entered in the login form
         if user and bcrypt.check_password_hash(user.password, formlogin.password.data):
             login_user(user, remember=True)
-            return redirect(url_for("users"))
+            return redirect(url_for("homepage"))
     else:
         flash('Incorrect password or username')
 
-    return render_template("main.html", form=formlogin)
+    return render_template("auth/login.html", form=formlogin)
 
 
 @app.route('/users/new', methods=["GET", "POST"])
@@ -70,7 +75,6 @@ def new_user():
 
 @app.route('/users')
 @login_required
-# @login_required
 def users():
     return render_template('/users/list.html')
 
