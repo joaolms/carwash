@@ -17,15 +17,16 @@ class User(database.Model, UserMixin):
     username = database.Column(database.String(80), nullable=False, unique=True)
     password = database.Column(database.String(120), nullable=False)
     phone = database.Column(database.String(20), nullable=False)
-    image = database.Column(database.String, default="user_default.png")
-    # vehicles = database.relationship("vehicle", backref="user", lazy=True)
+    role = database.Column(database.String(15), nullable=False, default='User')
+    image = database.Column(database.String, default='user_default.png')
+    # vehicles = database.relationship('Vehicle', backref='owner', lazy=True)
 
 
 class Vehicle(database.Model):
-    plate = database.Column(database.String(10), primary_key=True, unique=False, nullable=False)
+    plate = database.Column(database.String(10), primary_key=True, unique=True, nullable=False)
     model = database.Column(database.String(30), nullable=False)
     year = database.Column(database.Integer)
-    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
+    # user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
 
 
 class Booking(database.Model):

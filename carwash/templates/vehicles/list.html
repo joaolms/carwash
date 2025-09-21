@@ -1,7 +1,29 @@
 {% extends "base.html" %}
 
-{% block title %}Homepage{% endblock %}
+{% block title %}Vehicles{% endblock %}
 
 {% block content %}
 <h1>Vehicle list</h1>
+<a href="{{ url_for('vehicles_new') }}" class="btn btn-primary mb-3">New Vehicle</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Plate</th>
+            <th>Model</th>
+            <th>Year</th>
+<!--            <th>Owner</th>-->
+        </tr>
+    </thead>
+    <tbody>
+    {% for vehicle in vehicles %}
+    <tr>
+        <td>{{ vehicle.plate }}</td>
+        <td>{{ vehicle.model }}</td>
+        <td>{{ vehicle.year }}</td>
+<!--        <td>{{ vehicle.user_id }}</td>-->
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

@@ -1,8 +1,8 @@
 from carwash import app, database, bcrypt
-from carwash.models import User
+from carwash.models import User, Vehicle
 from flask import render_template, url_for, redirect, flash
 from flask_login import login_required, login_user, logout_user, current_user
-from carwash.forms import FormLogin, FormNewUser
+from carwash.forms import FormLogin, FormNewUser, FormNewVehicle
 
 
 @app.errorhandler(404)
@@ -57,6 +57,7 @@ def new_user():
         user = User(name=formnewuser.name.data,
                     username=formnewuser.username.data,
                     password=password_encrypted,
+                    role=formnewuser.role.data,
                     phone=formnewuser.phone_number.data)
 
         # Add the user to the database
@@ -65,7 +66,7 @@ def new_user():
 
         # After to create a new account, the user should be
         # logged in (login_user()) and redirect to a new page, in this case
-        # the user will be redirect to the USERS page, where
+        # the user will be redirected to the USERS page, where
         # "user" is a function of the routes.py.
         login_user(user, remember=True)
         return redirect(url_for("users"))
@@ -76,7 +77,35 @@ def new_user():
 @app.route('/users')
 @login_required
 def users():
-    return render_template('/users/list.html')
+    users = User.query.all()
+    return render_template('/users/list.html', users=users)
+
+@app.route('/vehicles')
+@login_required
+def vehicles():
+    vehicles = Vehicle.query.all()
+    return render_template('vehicles/list.html', vehicles=vehicles)
+
+
+@app.route('/vehicles/new', methods=["GET", "POST"])
+@login_required
+def vehicles_new():
+    formnewvehicle = FormNewVehicle()
+
+    if formnewvehicle.validate_on_submit():
+
+        vehicle = Vehicle(
+            plate = formnewvehicle.plate.data,
+            model = formnewvehicle.model.data,
+            year = formnewvehicle.year.data,
+        )
+
+        database.session.add(vehicle)
+        database.session.commit()
+
+        return redirect(url_for("vehicles"))
+
+    return render_template('vehicles/new.html', form=formnewvehicle)
 
 
 @app.route('/booking')
@@ -90,19 +119,6 @@ def booking():
 @login_required
 def schedules_new():
     return 'Booking a new service'
-
-
-@app.route('/vehicles')
-@login_required
-# @login_required
-def vehicles():
-    return render_template('vehicles/list.html')
-
-
-@app.route('/vehicles/new')
-@login_required
-def vehicles_new():
-    return 'Add a new vehicle'
 
 
 @app.route('/services')
