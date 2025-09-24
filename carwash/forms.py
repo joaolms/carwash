@@ -43,10 +43,8 @@ class FormNewVehicle(FlaskForm):
 
 
 class FormNewBooking(FlaskForm):
-    vehicles = Vehicle.query.all()
-
     appointment = DateTimeField("Appointment", validators=[DataRequired()])
-    vehicle_id = SelectField("Vehicle", choices=[v. for v in vehicles], validators=[DataRequired()])
+    vehicle_id = SelectField("Vehicle", choices=["Vehicle 1", "Vehicle 2"], validators=[DataRequired()])
     status = StringField("Status", validators=[DataRequired()])
     create_button = SubmitField("Create")
 

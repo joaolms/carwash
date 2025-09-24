@@ -33,7 +33,8 @@ class Booking(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     create_at = database.Column(database.DateTime, nullable=False, default=datetime.now(timezone.utc))
     appointment = database.Column(database.DateTime, nullable=False)
-    vehicle = database.relationship('Vehicle', backref='booking', lazy=True)
+    vehicle_plate = database.Column(database.String, database.ForeignKey('vehicle.plate'), nullable=False)
+    vehicle = database.relationship('Vehicle', backref='book', lazy=True)
     status = database.Column(database.String(20), default='Booked')
 
 

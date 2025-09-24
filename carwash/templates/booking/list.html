@@ -19,7 +19,7 @@
     {% for booking in bookings %}
     <tr>
         <td>{{ booking.date_time.strftime('%d/%m/%Y %H:%M') }}</td>
-        <td>{{ booking.vehicle_id }}</td>
+        <td>{{ booking.vehicle.plate }}</td>
         <td>{{ booking.status }}</td>
     </tr>
     {% endfor %}
