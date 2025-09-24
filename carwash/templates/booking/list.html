@@ -1,7 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %}Homepage{% endblock %}
+{% block title %}Booking{% endblock %}
 
 {% block content %}
-<h1>Booking list</h1>
+<h1>Booking</h1>
+<a href="{{ url_for('schedules_new') }}" class="btn btn-primary mb-3">New Booking</a>
+
+<table class="table table-hover caption-top">
+    <caption>List of booking</caption>
+    <thead class="table-dark">
+        <tr>
+            <th>Appointment</th>
+            <th>Vehicle</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    {% for booking in bookings %}
+    <tr>
+        <td>{{ booking.date_time.strftime('%d/%m/%Y %H:%M') }}</td>
+        <td>{{ booking.vehicle_id }}</td>
+        <td>{{ booking.status }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Create user{% endblock %}
+
+{% block content %}
+
+<form method="POST">
+    {{ form.csrf_token }}
+    <div class="mb-3">
+        {{ form.service.label(class="form-label") }}
+        {{ form.service(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.cost.label(class="form-label") }}
+        {{ form.cost(class="form-control") }}
+    </div>
+    <div class="d-grid col-md-1">
+        {{ form.create_button(class="btn btn-primary", value="Create", type="submit") }}
+    </div>
+</form>
+
+{% endblock %}

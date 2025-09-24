@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Booking{% endblock %}
+
+{% block content %}
+
+<h1>New Booking</h1>
+
+<form method="POST">
+    {{ form.csrf_token }}
+    <div class="mb-3">
+        {{ form.appointment.label(class="form-label") }}
+        {{ form.appointment(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.vehicle_id.label(class="form-label") }}
+        {{ form.vehicle_id(class="form-select") }}
+
+    </div>
+    <div class="mb-3">
+        {{ form.status.label(class="form-label") }}
+        {{ form.status(class="form-control") }}
+    </div>
+    <div class="d-grid">
+        {{ form.create_button(class="btn btn-primary", value="Create", type="submit") }}
+    </div>
+</form>
+
+{% endblock %}

@@ -1,7 +1,26 @@
 {% extends "base.html" %}
 
-{% block title %}Homepage{% endblock %}
+{% block title %}Services{% endblock %}
 
 {% block content %}
-<h1>Service list</h1>
+<h1>Services</h1>
+<a href="{{ url_for('services_new') }}" class="btn btn-primary mb-3">New Service</a>
+
+<table class="table table-hover caption-top">
+    <caption>List of services</caption>
+    <thead class="table-dark">
+        <tr>
+            <th>Service</th>
+            <th>Cost</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    {% for service in services %}
+    <tr>
+        <td>{{ service.service }}</td>
+        <td>{{ service.cost }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
