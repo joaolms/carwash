@@ -19,19 +19,25 @@ class User(database.Model, UserMixin):
     phone = database.Column(database.String(20), nullable=False)
     role = database.Column(database.String(15), nullable=False, default='User')
     image = database.Column(database.String, default='user_default.png')
-    # vehicles = database.relationship('Vehicle', backref='owner', lazy=True)
+    vehicles = database.relationship('Vehicle', backref='owner', lazy=True)
 
 
 class Vehicle(database.Model):
     plate = database.Column(database.String(10), primary_key=True, unique=True, nullable=False)
     model = database.Column(database.String(30), nullable=False)
     year = database.Column(database.Integer)
-    # user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
 
 
 class Booking(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     create_at = database.Column(database.DateTime, nullable=False, default=datetime.now(timezone.utc))
     appointment = database.Column(database.DateTime, nullable=False)
-    vehicle_id = database.Column(database.Integer, database.ForeignKey('vehicle.plate'), nullable=False)
+    vehicle = database.relationship('Vehicle', backref='booking', lazy=True)
     status = database.Column(database.String(20), default='Booked')
+
+
+class Service(database.Model):
+    id = database.Column(database.Integer, primary_key=True, unique=True, nullable=False)
+    service = database.Column(database.String(30), nullable=False)
+    cost = database.Column(database.Float, nullable=False)
