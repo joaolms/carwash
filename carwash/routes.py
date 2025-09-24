@@ -1,8 +1,9 @@
 from carwash import app, database, bcrypt
-from carwash.models import User, Vehicle
+from carwash.models import User, Vehicle, Booking, Service
 from flask import render_template, url_for, redirect, flash
 from flask_login import login_required, login_user, logout_user, current_user
-from carwash.forms import FormLogin, FormNewUser, FormNewVehicle
+from carwash.forms import FormLogin, FormNewUser, FormNewVehicle, FormNewBooking, FormNewService
+from datetime import datetime
 
 
 @app.errorhandler(404)
@@ -90,6 +91,7 @@ def vehicles():
 @app.route('/vehicles/new', methods=["GET", "POST"])
 @login_required
 def vehicles_new():
+    owners = User.query.all()
     formnewvehicle = FormNewVehicle()
 
     if formnewvehicle.validate_on_submit():
@@ -98,6 +100,7 @@ def vehicles_new():
             plate = formnewvehicle.plate.data,
             model = formnewvehicle.model.data,
             year = formnewvehicle.year.data,
+            user_id = formnewvehicle.owner.data,
         )
 
         database.session.add(vehicle)
@@ -105,30 +108,59 @@ def vehicles_new():
 
         return redirect(url_for("vehicles"))
 
-    return render_template('vehicles/new.html', form=formnewvehicle)
+    return render_template('vehicles/new.html', form=formnewvehicle, owners=owners)
 
 
 @app.route('/booking')
 @login_required
-# @login_required
 def booking():
-    return render_template('booking/list.html')
+    bookings = Booking.query.all()
+    return render_template('booking/list.html', bookings=bookings)
 
 
-@app.route('/booking/new')
+@app.route('/booking/new', methods=["GET", "POST"])
 @login_required
 def schedules_new():
-    return 'Booking a new service'
+    formnewbooking = FormNewBooking()
+
+
+
+    if formnewbooking.validate_on_submit():
+
+        booking = Booking(
+            appointment = formnewbooking.appointment.data,
+            vehicle_id = formnewbooking.vehicle.id,
+            status = formnewbooking.status.data,
+        )
+
+        database.session.add(booking)
+        database.session.commit()
+        return redirect(url_for("bookings"))
+
+    return render_template('booking/new.html', form=formnewbooking)
 
 
 @app.route('/services')
 @login_required
-# @login_required
 def services():
-    return render_template('services/list.html')
+    services = Service.query.all()
+    return render_template('services/list.html', services=services)
 
 
-@app.route('/services/new')
+@app.route('/services/new', methods=["GET", "POST"])
 @login_required
 def services_new():
-    return 'Add a new services'
+    formnewservice = FormNewService()
+
+    if formnewservice.validate_on_submit():
+
+        service = Service(
+            service = formnewservice.service.data,
+            cost = formnewservice.cost.data
+        )
+
+        database.session.add(service)
+        database.session.commit()
+        return redirect(url_for("services"))
+
+    return render_template('services/new.html', form=formnewservice)
