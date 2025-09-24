@@ -14,11 +14,11 @@
                     {{ form.csrf_token }}
                     <div class="mb-3">
                         {{ form.username.label(class="form-label") }}
-                        {{ form.username(class="form-control") }}
+                        {{ form.username(class="form-control", placeholder="Enter your username") }}
                     </div>
                     <div class="mb-3">
                         {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control") }}
+                        {{ form.password(class="form-control", placeholder="Enter your password") }}
                     </div>
                     <div class="d-grid">
                         {{ form.confirmation_button(class="btn btn-primary", value="Login", type="submit") }}
