@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, DateTimeField, SelectField, IntegerField, DecimalField
 from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 from carwash.models import User, Vehicle
 
@@ -33,9 +33,25 @@ class FormNewVehicle(FlaskForm):
     plate = StringField("Plate", validators=[DataRequired()])
     model = StringField("Model", validators=[DataRequired()])
     year = StringField("Year", validators=[DataRequired()])
+    owner = StringField("Owner", validators=[DataRequired()])
     create_button = SubmitField("Create")
 
     def validate_plate(self, plate):
         vehicle = Vehicle.query.filter_by(plate=plate.data).first()
         if vehicle:
             return ValidationError("Vehicle already exists.")
+
+
+class FormNewBooking(FlaskForm):
+    vehicles = Vehicle.query.all()
+
+    appointment = DateTimeField("Appointment", validators=[DataRequired()])
+    vehicle_id = SelectField("Vehicle", choices=[v. for v in vehicles], validators=[DataRequired()])
+    status = StringField("Status", validators=[DataRequired()])
+    create_button = SubmitField("Create")
+
+
+class FormNewService(FlaskForm):
+    service = StringField("Service", validators=[DataRequired()])
+    cost = DecimalField("Cost", rounding=None, validators=[DataRequired()])
+    create_button = SubmitField("Create")
