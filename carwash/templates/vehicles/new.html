@@ -3,33 +3,35 @@
 {% block title %}Create user{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="text-center">Create vehicle</h3>
-            </div>
-            <div class="card-body">
-                <form method="POST">
-                    {{ form.csrf_token }}
-                    <div class="mb-3">
-                        {{ form.plate.label(class="form-label") }}
-                        {{ form.plate(class="form-control") }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.model.label(class="form-label") }}
-                        {{ form.model(class="form-control") }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.year.label(class="form-label") }}
-                        {{ form.year(class="form-control") }}
-                    </div>
-                    <div class="d-grid">
-                        {{ form.create_button(class="btn btn-primary", value="Create", type="submit") }}
-                    </div>
-                </form>
-            </div>
-        </div>
+
+<h1>New vehicle</h1>
+
+<form method="POST">
+    {{ form.csrf_token }}
+    <div class="mb-3">
+        {{ form.plate.label(class="form-label") }}
+        {{ form.plate(class="form-control") }}
     </div>
-</div>
+    <div class="mb-3">
+        {{ form.model.label(class="form-label") }}
+        {{ form.model(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.year.label(class="form-label") }}
+        {{ form.year(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.owner.label(class="form-label") }}
+        <select class="form-select" name="owner">
+            {% for owner in owners %}
+            <option value="{{ owner.id }}">{{ owner.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="d-grid col-md-1">
+        {{ form.create_button(class="btn btn-primary", value="Create", type="submit") }}
+    </div>
+</form>
+
+
 {% endblock %}

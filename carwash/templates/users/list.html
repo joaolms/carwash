@@ -6,8 +6,9 @@
 <h1>Clients</h1>
 <a href="{{ url_for('new_user') }}" class="btn btn-primary mb-3">New User</a>
 
-<table class="table">
-    <thead>
+<table class="table table-hover caption-top">
+    <caption>List of users</caption>
+    <thead class="table-dark">
         <tr>
             <th>Name</th>
             <th>Username</th>
@@ -15,7 +16,7 @@
             <th>Role</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
     {% for user in users %}
     <tr>
         <td>{{ user.name }}</td>
