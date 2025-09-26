@@ -1,5 +1,11 @@
+from tabnanny import check
+
+import wtforms
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, DateTimeField, SelectField, IntegerField, DecimalField
+from wtforms.fields import choices
+from wtforms.fields.choices import RadioField
+from wtforms.fields.simple import MultipleFileField
 from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 from carwash.models import User, Vehicle
 
@@ -44,7 +50,8 @@ class FormNewVehicle(FlaskForm):
 
 class FormNewBooking(FlaskForm):
     appointment = DateTimeField("Appointment", validators=[DataRequired()])
-    vehicle_id = SelectField("Vehicle", choices=["Vehicle 1", "Vehicle 2"], validators=[DataRequired()])
+    vehicle_id = SelectField("Vehicle", choices=[], validators=[DataRequired()])
+    services = SelectField("Services", choices=[], validators=[DataRequired()])
     status = StringField("Status", validators=[DataRequired()])
     create_button = SubmitField("Create")
 

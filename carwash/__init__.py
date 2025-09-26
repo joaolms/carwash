@@ -11,7 +11,6 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///carwash.db"
 database = SQLAlchemy(app)
 
-
 # Login
 ## SECRET_KEY will be used in the CSRF forms and for encrypt the user password
 app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')

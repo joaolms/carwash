@@ -1,3 +1,5 @@
+from typing import Any
+
 from carwash import app, database, bcrypt
 from carwash.models import User, Vehicle, Booking, Service
 from flask import render_template, url_for, redirect, flash
@@ -123,13 +125,25 @@ def booking():
 def schedules_new():
     formnewbooking = FormNewBooking()
 
+    def get_choices(choice):
+        if choice == 'vehicle':
+            vehicles = Vehicle.query.all()
+            return [f'{v.plate} - {v.model}' for v in vehicles]
 
+        if choice == 'service':
+            services = Service.query.all()
+            return [service.service for service in services]
+
+
+    formnewbooking.vehicle_id.choices = get_choices('vehicle')
+    formnewbooking.services.choices = get_choices('service')
 
     if formnewbooking.validate_on_submit():
 
         booking = Booking(
             appointment = formnewbooking.appointment.data,
-            vehicle_id = formnewbooking.vehicle.id,
+            vehicle = formnewbooking.vehicle_id.data,
+            services = formnewbooking.services.data,
             status = formnewbooking.status.data,
         )
 
@@ -137,7 +151,7 @@ def schedules_new():
         database.session.commit()
         return redirect(url_for("bookings"))
 
-    return render_template('booking/new.html', form=formnewbooking)
+    return render_template('booking/new.html', form=formnewbooking, vehicles=vehicles)
 
 
 @app.route('/services')
