@@ -1,9 +1,11 @@
+from time import gmtime
+
 from carwash import app, database, bcrypt
 from carwash.models import User, Vehicle, Booking, Service
 from flask import render_template, url_for, redirect, flash,request
 from flask_login import login_required, login_user, logout_user, current_user
 from carwash.forms import FormLogin, FormNewUser, FormNewVehicle, FormNewBooking, FormNewService, FormEditUser, FormVehicleEdit, FormServiceEdit
-from datetime import datetime\
+from datetime import datetime, timezone
 
 
 @app.errorhandler(404)
@@ -191,20 +193,16 @@ def schedules_new():
     formnewbooking.service_id.choices = [(s.id, s.service) for s in services]
 
     if formnewbooking.validate_on_submit():
-        print(f'Validated on submit\nPlate: {formnewbooking.vehicle_plate.data}')
+        created_at = datetime.now(timezone.utc)
         booking = Booking(
+            created_at = created_at,
             vehicle_plate = formnewbooking.vehicle_plate.data,
             service_id = formnewbooking.service_id.data
         )
-
         database.session.add(booking)
         database.session.commit()
-        print(f'Booking saved: {booking}')
 
         return redirect(url_for("booking"))
-    else:
-        print(f'failed to validate booking form\nPlate: {formnewbooking.vehicle_plate.data}\nService_id: {formnewbooking.service_id.data}')
-        print(f'Form errors: {formnewbooking.errors}')
 
     return render_template('booking/new.html', form=formnewbooking, vehicles=vehicles, services=services)
 

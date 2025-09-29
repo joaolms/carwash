@@ -10,6 +10,7 @@
     <caption>List of booking</caption>
     <thead class="table-dark">
         <tr>
+            <th>Created at</th>
             <th>Vehicle</th>
             <th>Service</th>
         </tr>
@@ -17,7 +18,8 @@
     <tbody class="table-group-divider">
     {% for booking in bookings %}
     <tr>
-        <td>{{ booking.vehicle.plate }}</td>
+        <td>{{ booking.created_at.strftime("%d/%m/%Y - %H:%M:%S") }}</td>
+        <td>{{ booking.vehicle.plate }} - {{ booking.vehicle.model }} - {{ booking.vehicle.owner.name }}</td>
         <td>{{ booking.service.service }}</td>
     </tr>
     {% endfor %}
