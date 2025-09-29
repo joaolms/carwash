@@ -1,10 +1,8 @@
-from typing import Any
-
 from carwash import app, database, bcrypt
 from carwash.models import User, Vehicle, Booking, Service
 from flask import render_template, url_for, redirect, flash
 from flask_login import login_required, login_user, logout_user, current_user
-from carwash.forms import FormLogin, FormNewUser, FormNewVehicle, FormNewBooking, FormNewService, FormEditUser, FormVehicleEdit
+from carwash.forms import FormLogin, FormNewUser, FormNewVehicle, FormNewBooking, FormNewService, FormEditUser, FormVehicleEdit, FormServiceEdit
 from datetime import datetime
 
 
@@ -160,7 +158,6 @@ def vehicle_edit(vehicle_plate):
             "model": form.model.data
         })
         database.session.commit()
-
         return redirect(url_for("vehicles"))
 
     return render_template("vehicles/edit.html", vehicle=vehicle, form=form, owners=owners)
@@ -240,3 +237,29 @@ def services_new():
         return redirect(url_for("services"))
 
     return render_template('services/new.html', form=formnewservice)
+
+
+@app.route('/services/<int:id>/edit', methods=["GET", "POST"])
+@login_required
+def service_edit(id):
+    service = Service.query.get(id)
+    form = FormServiceEdit()
+
+    if form.validate_on_submit():
+        Service.query.filter_by(id=id).update({
+            "service": form.service.data,
+            "cost": form.cost.data
+        })
+        database.session.commit()
+        return redirect(url_for("services"))
+
+    return render_template("services/edit.html", form=form, service=service)
+
+
+@app.route('/services/<int:id>/delete', methods=["GET", "POST"])
+@login_required
+def service_delete(id):
+    service = Service.query.get(id)
+    database.session.delete(service)
+    database.session.commit()
+    return redirect(url_for("services"))

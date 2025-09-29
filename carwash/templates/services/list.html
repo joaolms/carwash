@@ -12,6 +12,7 @@
         <tr>
             <th>Service</th>
             <th>Cost</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody class="table-group-divider">
@@ -19,6 +20,10 @@
     <tr>
         <td>{{ service.service }}</td>
         <td>{{ service.cost }}</td>
+        <td>
+            <a href="{{ url_for('service_edit', id=service.id) }}" class="btn btn-secondary btn-sm">Edit</a>
+            <a href="{{ url_for('service_delete', id=service.id) }}" class="btn btn-danger btn-sm btn-delete">Delete</a>
+        </td>
     </tr>
     {% endfor %}
     </tbody>

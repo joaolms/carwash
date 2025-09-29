@@ -78,3 +78,9 @@ class FormNewService(FlaskForm):
     service = StringField("Service", validators=[DataRequired()])
     cost = DecimalField("Cost", rounding=None, validators=[DataRequired()])
     create_button = SubmitField("Create")
+
+
+class FormServiceEdit(FlaskForm):
+    service = StringField("Service", validators=[DataRequired()])
+    cost = DecimalField("Cost", rounding=None, validators=[DataRequired()])
+    update_button = SubmitField("Update")
