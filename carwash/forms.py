@@ -59,19 +59,16 @@ class FormNewVehicle(FlaskForm):
         if vehicle:
             return ValidationError("Vehicle already exists.")
 
+class FormNewBooking(FlaskForm):
+    vehicle_plate = SelectField("Vehicle", choices=[], validators=[DataRequired()])
+    service_id = SelectField("Service", choices=[], validators=[DataRequired()])
+    create_button = SubmitField("Create")
+
 
 class FormVehicleEdit(FlaskForm):
     owner = StringField("Owner", validators=[DataRequired()])
     model = StringField("Model", validators=[DataRequired()])
     update_button = SubmitField("Update")
-
-
-class FormNewBooking(FlaskForm):
-    appointment = DateTimeField("Appointment", validators=[DataRequired()])
-    vehicle_id = SelectField("Vehicle", choices=[], validators=[DataRequired()])
-    services = SelectField("Services", choices=[], validators=[DataRequired()])
-    status = StringField("Status", validators=[DataRequired()])
-    create_button = SubmitField("Create")
 
 
 class FormNewService(FlaskForm):

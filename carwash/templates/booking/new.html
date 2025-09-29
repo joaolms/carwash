@@ -8,22 +8,23 @@
 <form method="POST">
     {{ form.csrf_token }}
     <div class="mb-3">
-        {{ form.appointment.label(class="form-label") }}
-        {{ form.appointment(class="form-control", type="datetime-local") }}
+        {{ form.vehicle_plate.label(class="form-label") }}
+<!--        <select class="form-select" name="vehicle_plate">-->
+<!--            {% for vehicle in vehicles %}-->
+<!--            <option value="{{ vehicle.plate }}">{{ vehicle.plate }} - {{ vehicle.model }}, de {{ vehicle.owner.name }}</option>-->
+<!--            {% endfor %}-->
+<!--        </select>-->
+        {{ form.vehicle_plate(class="form-control") }}
     </div>
     <div class="mb-3">
-        {{ form.vehicle_id.label(class="form-label") }}
-        {{ form.vehicle_id(class="form-select") }}
+        {{ form.service_id.label(class="form-label") }}
+        <select class="form-select" name="service_id">
+            {% for service in services %}
+            <option value="{{ service.id }}">{{ service.service }}</option>
+            {% endfor %}
+        </select>
     </div>
-    <div class="mb-3">
-        {{ form.services.label(class="form-label") }}
-        {{ form.services(class="form-control") }}
-    </div>
-    <div class="mb-3">
-        {{ form.status.label(class="form-label") }}
-        {{ form.status(class="form-control") }}
-    </div>
-    <div class="d-grid">
+    <div class="d-grid col-md-1">
         {{ form.create_button(class="btn btn-primary", value="Create", type="submit") }}
     </div>
 </form>

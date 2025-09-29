@@ -30,12 +30,13 @@ class Vehicle(database.Model):
 
 
 class Booking(database.Model):
-    id = database.Column(database.Integer, primary_key=True)
-    create_at = database.Column(database.DateTime, nullable=False, default=datetime.now(timezone.utc))
-    appointment = database.Column(database.DateTime, nullable=False)
-    vehicle_plate = database.Column(database.String, database.ForeignKey('vehicle.plate'), nullable=False)
+    id = database.Column(database.Integer, primary_key=True, unique=True, nullable=False)
+    # create_at = database.Column(database.DateTime, nullable=False, default=datetime.now(timezone.utc))
+    # appointment = database.Column(database.DateTime, nullable=False)
     vehicle = database.relationship('Vehicle', backref='book', lazy=True)
-    status = database.Column(database.String(20), default='Booked')
+    vehicle_plate = database.Column(database.String(10), database.ForeignKey('vehicle.plate'), nullable=False)
+    service = database.relationship('Service', backref='book', lazy=True)
+    service_id = database.Column(database.Integer, database.ForeignKey('service.id'))
 
 
 class Service(database.Model):

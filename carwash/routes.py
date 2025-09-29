@@ -1,9 +1,9 @@
 from carwash import app, database, bcrypt
 from carwash.models import User, Vehicle, Booking, Service
-from flask import render_template, url_for, redirect, flash
+from flask import render_template, url_for, redirect, flash,request
 from flask_login import login_required, login_user, logout_user, current_user
 from carwash.forms import FormLogin, FormNewUser, FormNewVehicle, FormNewBooking, FormNewService, FormEditUser, FormVehicleEdit, FormServiceEdit
-from datetime import datetime
+from datetime import datetime\
 
 
 @app.errorhandler(404)
@@ -183,34 +183,30 @@ def booking():
 @login_required
 def schedules_new():
     formnewbooking = FormNewBooking()
+    vehicles = Vehicle.query.all()
+    services = Service.query.all()
 
-    def get_choices(choice):
-        if choice == 'vehicle':
-            vehicles = Vehicle.query.all()
-            return [f'{v.plate} - {v.model}' for v in vehicles]
-
-        if choice == 'service':
-            services = Service.query.all()
-            return [service.service for service in services]
-
-
-    formnewbooking.vehicle_id.choices = get_choices('vehicle')
-    formnewbooking.services.choices = get_choices('service')
+    # Dynamic choices for SelectField on the form
+    formnewbooking.vehicle_plate.choices = [(v.plate, f'{v.plate} - {v.model}, de {v.owner.name}') for v in vehicles]
+    formnewbooking.service_id.choices = [(s.id, s.service) for s in services]
 
     if formnewbooking.validate_on_submit():
-
+        print(f'Validated on submit\nPlate: {formnewbooking.vehicle_plate.data}')
         booking = Booking(
-            appointment = formnewbooking.appointment.data,
-            vehicle = formnewbooking.vehicle_id.data,
-            services = formnewbooking.services.data,
-            status = formnewbooking.status.data,
+            vehicle_plate = formnewbooking.vehicle_plate.data,
+            service_id = formnewbooking.service_id.data
         )
 
         database.session.add(booking)
         database.session.commit()
-        return redirect(url_for("bookings"))
+        print(f'Booking saved: {booking}')
 
-    return render_template('booking/new.html', form=formnewbooking, vehicles=vehicles)
+        return redirect(url_for("booking"))
+    else:
+        print(f'failed to validate booking form\nPlate: {formnewbooking.vehicle_plate.data}\nService_id: {formnewbooking.service_id.data}')
+        print(f'Form errors: {formnewbooking.errors}')
+
+    return render_template('booking/new.html', form=formnewbooking, vehicles=vehicles, services=services)
 
 
 @app.route('/services')

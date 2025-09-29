@@ -10,22 +10,15 @@
     <caption>List of booking</caption>
     <thead class="table-dark">
         <tr>
-            <th>Appointment</th>
             <th>Vehicle</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>Service</th>
         </tr>
     </thead>
     <tbody class="table-group-divider">
     {% for booking in bookings %}
     <tr>
-        <td>{{ booking.date_time.strftime('%d/%m/%Y %H:%M') }}</td>
         <td>{{ booking.vehicle.plate }}</td>
-        <td>{{ booking.status }}</td>
-        <td>
-            <a href="{{ url_for('edit_booking', booking_id=booking.id) }}">Edit</a>
-            <a href="{{ url_for('delete_booking', booking_id=booking.id) }}">Delete</a>
-        </td>
+        <td>{{ booking.service.service }}</td>
     </tr>
     {% endfor %}
     </tbody>
