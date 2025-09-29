@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Edit vehicle{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Edit vehicle</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.csrf_token }}
+                    <div class="mb-3">
+                        {{ form.model.label(class="form-label") }}
+                        {{ form.model(class="form-control", value=vehicle.model ) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.owner.label(class="form-label") }}
+                        <select class="form-select" name="owner">
+                            {% for owner in owners %}
+                            <option value="{{ owner.id }}">{{ owner.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="d-grid">
+                        {{ form.update_button(class="btn btn-success", value="Update", type="submit") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

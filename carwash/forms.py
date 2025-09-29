@@ -35,6 +35,18 @@ class FormNewUser(FlaskForm):
             return ValidationError("Username already exists.")
 
 
+class FormEditUser(FlaskForm):
+    name = StringField("Name")
+    phone_number = StringField("Phone number")
+    role = SelectField("Role", choices=["User", "Admin"], validators=[DataRequired()])
+
+    password = PasswordField("Password")
+    password_confirmation = PasswordField("Password confirmation",
+                                          validators=[EqualTo("password", message="Passwords must match")])
+
+    confirmation_button = SubmitField("Update")
+
+
 class FormNewVehicle(FlaskForm):
     plate = StringField("Plate", validators=[DataRequired()])
     model = StringField("Model", validators=[DataRequired()])
@@ -46,6 +58,12 @@ class FormNewVehicle(FlaskForm):
         vehicle = Vehicle.query.filter_by(plate=plate.data).first()
         if vehicle:
             return ValidationError("Vehicle already exists.")
+
+
+class FormVehicleEdit(FlaskForm):
+    owner = StringField("Owner", validators=[DataRequired()])
+    model = StringField("Model", validators=[DataRequired()])
+    update_button = SubmitField("Update")
 
 
 class FormNewBooking(FlaskForm):

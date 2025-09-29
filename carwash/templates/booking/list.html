@@ -13,6 +13,7 @@
             <th>Appointment</th>
             <th>Vehicle</th>
             <th>Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody class="table-group-divider">
@@ -21,6 +22,10 @@
         <td>{{ booking.date_time.strftime('%d/%m/%Y %H:%M') }}</td>
         <td>{{ booking.vehicle.plate }}</td>
         <td>{{ booking.status }}</td>
+        <td>
+            <a href="{{ url_for('edit_booking', booking_id=booking.id) }}">Edit</a>
+            <a href="{{ url_for('delete_booking', booking_id=booking.id) }}">Delete</a>
+        </td>
     </tr>
     {% endfor %}
     </tbody>

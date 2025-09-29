@@ -4,7 +4,7 @@ from carwash import app, database, bcrypt
 from carwash.models import User, Vehicle, Booking, Service
 from flask import render_template, url_for, redirect, flash
 from flask_login import login_required, login_user, logout_user, current_user
-from carwash.forms import FormLogin, FormNewUser, FormNewVehicle, FormNewBooking, FormNewService
+from carwash.forms import FormLogin, FormNewUser, FormNewVehicle, FormNewBooking, FormNewService, FormEditUser, FormVehicleEdit
 from datetime import datetime
 
 
@@ -40,8 +40,8 @@ def login():
         if user and bcrypt.check_password_hash(user.password, formlogin.password.data):
             login_user(user, remember=True)
             return redirect(url_for("homepage"))
-    else:
-        flash('Incorrect password or username')
+        else:
+            flash('Incorrect password or username', 'error')
 
     return render_template("auth/login.html", form=formlogin)
 
@@ -90,6 +90,40 @@ def vehicles():
     return render_template('vehicles/list.html', vehicles=vehicles)
 
 
+@app.route('/<int:user_id>/edit_user', methods=["GET", "POST"])
+@login_required
+def edit_user(user_id):
+    current_user_info = User.query.filter_by(id=user_id).first()
+    form = FormEditUser()
+
+    if form.validate_on_submit():
+        if form.password.data:
+            password_encrypted = bcrypt.generate_password_hash(form.password.data)
+        else:
+            password_encrypted = current_user_info.password
+
+        # Update user register
+        User.query.filter_by(id=user_id).update({
+            "name": form.name.data,
+            "phone": form.phone_number.data,
+            "role": form.role.data,
+            "password": password_encrypted
+        })
+        database.session.commit()
+
+        return redirect(url_for("users"))
+
+    return render_template("users/edit.html", user=current_user_info, form=form)
+
+@app.route('/<int:user_id>/delete', methods=["GET", "POST", "PUT"])
+@login_required
+def delete_user(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    database.session.delete(user)
+    database.session.commit()
+    return redirect(url_for("users"))
+
+
 @app.route('/vehicles/new', methods=["GET", "POST"])
 @login_required
 def vehicles_new():
@@ -111,6 +145,34 @@ def vehicles_new():
         return redirect(url_for("vehicles"))
 
     return render_template('vehicles/new.html', form=formnewvehicle, owners=owners)
+
+
+@app.route('/vehicles/<vehicle_plate>/edit', methods=["GET", "POST"])
+@login_required
+def vehicle_edit(vehicle_plate):
+    vehicle = Vehicle.query.get(vehicle_plate)
+    owners = User.query.all()
+    form = FormVehicleEdit()
+
+    if form.validate_on_submit():
+        Vehicle.query.filter_by(plate=vehicle_plate).update({
+            "user_id": form.owner.data,
+            "model": form.model.data
+        })
+        database.session.commit()
+
+        return redirect(url_for("vehicles"))
+
+    return render_template("vehicles/edit.html", vehicle=vehicle, form=form, owners=owners)
+
+
+@app.route('/vehicles/<vehicle_plate>/delete', methods=["GET", "POST"])
+@login_required
+def vehicle_delete(vehicle_plate):
+    vehicle = Vehicle.query.get(vehicle_plate)
+    database.session.delete(vehicle)
+    database.session.commit()
+    return redirect(url_for("vehicles"))
 
 
 @app.route('/booking')
