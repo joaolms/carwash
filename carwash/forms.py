@@ -6,7 +6,7 @@ from wtforms import StringField, PasswordField, SubmitField, DateTimeField, Sele
 from wtforms.fields import choices
 from wtforms.fields.choices import RadioField
 from wtforms.fields.simple import MultipleFileField
-from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
+from wtforms.validators import DataRequired, EqualTo, Length, ValidationError, Optional
 from carwash.models import User, Vehicle
 
 
@@ -62,8 +62,15 @@ class FormNewVehicle(FlaskForm):
 class FormNewBooking(FlaskForm):
     vehicle_plate = SelectField("Vehicle", choices=[], validators=[DataRequired()])
     service_id = SelectField("Service", choices=[], validators=[DataRequired()])
+    appointment = DateTimeField("Appointment", format='%Y-%m-%dT%H:%M', validators=[DataRequired()])
     create_button = SubmitField("Create")
 
+
+class FormBookingEdit(FlaskForm):
+    vehicle_plate = SelectField("Vehicle", choices=[], validators=[DataRequired()])
+    service_id = SelectField("Service", choices=[], validators=[DataRequired()])
+    appointment = DateTimeField("Appointment", format='%Y-%m-%dT%H:%M', validators=[DataRequired()])
+    update_button = SubmitField("Create")
 
 class FormVehicleEdit(FlaskForm):
     owner = StringField("Owner", validators=[DataRequired()])

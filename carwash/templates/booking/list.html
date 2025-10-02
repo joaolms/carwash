@@ -13,14 +13,21 @@
             <th>Created at</th>
             <th>Vehicle</th>
             <th>Service</th>
+            <th>Booked</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody class="table-group-divider">
     {% for booking in bookings %}
     <tr>
-        <td>{{ booking.created_at.strftime("%d/%m/%Y - %H:%M:%S") }}</td>
+        <td>{{ booking.created_at.strftime("%d/%m/%Y às %H:%M") }}</td>
         <td>{{ booking.vehicle.plate }} - {{ booking.vehicle.model }} - {{ booking.vehicle.owner.name }}</td>
         <td>{{ booking.service.service }}</td>
+        <td>{{ booking.appointment.strftime("%d/%m/%Y às %H:%M") }}</td>
+        <td>
+            <a href="{{ url_for('booking_edit', id=booking.id) }}" class="btn btn-secondary btn-sm">Edit</a>
+            <a href="{{ url_for('booking_delete', id=booking.id) }}" class="btn btn-secondary btn-sm btn-danger">Delete</a>
+        </td>
     </tr>
     {% endfor %}
     </tbody>

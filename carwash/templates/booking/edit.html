@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Booking{% endblock %}
+
+{% block content %}
+
+<h1>Edit Booking</h1>
+<form method="POST">
+    {{ form.csrf_token }}
+    <div class="mb-3">
+        {{ form.appointment.label(class="form-label") }}
+        {{ form.appointment(class="form-control", value=book.appointment, type="datetime-local") }}
+    </div>
+    <div class="mb-3">
+        {{ form.vehicle_plate.label(class="form-label") }}
+        {{ form.vehicle_plate(class="form-select", value=book.vehicle_plate) }}
+    </div>
+    <div class="mb-3">
+        {{ form.service_id.label(class="form-label") }}
+        <select class="form-select" name="service_id">
+            {% for service in services %}
+                {% if book.service_id == service.id %}
+                    <option value="{{ service.id }}" selected>{{ service.service }}</option>
+                {% else %}
+                    <option value="{{ service.id }}">{{ service.service }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="d-grid col-md-1">
+        {{ form.update_button(class="btn btn-primary", value="Update", type="submit") }}
+    </div>
+</form>
+
+{% endblock %}

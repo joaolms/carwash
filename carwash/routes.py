@@ -1,10 +1,13 @@
 from time import gmtime
 
+from dns.dnssec import validate
+from wtforms.validators import DataRequired
+
 from carwash import app, database, bcrypt
 from carwash.models import User, Vehicle, Booking, Service
 from flask import render_template, url_for, redirect, flash,request
 from flask_login import login_required, login_user, logout_user, current_user
-from carwash.forms import FormLogin, FormNewUser, FormNewVehicle, FormNewBooking, FormNewService, FormEditUser, FormVehicleEdit, FormServiceEdit
+from carwash.forms import FormLogin, FormNewUser, FormNewVehicle, FormNewBooking, FormNewService, FormEditUser, FormVehicleEdit, FormServiceEdit, FormBookingEdit
 from datetime import datetime, timezone
 
 
@@ -82,6 +85,7 @@ def new_user():
 def users():
     users = User.query.all()
     return render_template('/users/list.html', users=users)
+
 
 @app.route('/vehicles')
 @login_required
@@ -194,17 +198,57 @@ def schedules_new():
 
     if formnewbooking.validate_on_submit():
         created_at = datetime.now(timezone.utc)
+
         booking = Booking(
             created_at = created_at,
             vehicle_plate = formnewbooking.vehicle_plate.data,
-            service_id = formnewbooking.service_id.data
+            service_id = formnewbooking.service_id.data,
+            appointment = formnewbooking.appointment.data
         )
+
         database.session.add(booking)
         database.session.commit()
 
         return redirect(url_for("booking"))
 
+    if formnewbooking.errors:
+        print(f"Form errors: {formnewbooking.errors}")
+
     return render_template('booking/new.html', form=formnewbooking, vehicles=vehicles, services=services)
+
+
+@app.route('/booking/<int:id>/edit', methods=["GET", "POST"])
+@login_required
+def booking_edit(id):
+    book = Booking.query.get(id)
+    form = FormBookingEdit()
+    vehicles = Vehicle.query.all()
+    services = Service.query.all()
+    form.vehicle_plate.choices = [(v.plate, f'{v.plate} - {v.model}, de {v.owner.name}') for v in vehicles]
+    form.service_id.choices = [(s.id, s.service) for s in services]
+
+    if form.validate_on_submit():
+        Booking.query.filter_by(id=id).update({
+            "service_id": form.service_id.data,
+            "appointment": form.appointment.data,
+            "vehicle_plate": form.vehicle_plate.data
+        })
+        database.session.commit()
+        return redirect(url_for("booking"))
+
+    if form.errors:
+        print(f'Form errors: {form.errors}')
+
+    return render_template('booking/edit.html', book=book, form=form, services=services)
+
+
+@app.route('/booking/<int:id>/delete', methods=["GET", "POST"])
+@login_required
+def booking_delete(id):
+    book = Booking.query.get(id)
+    database.session.delete(book)
+    database.session.commit()
+    return redirect(url_for("booking"))
 
 
 @app.route('/services')

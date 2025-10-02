@@ -8,6 +8,10 @@
 <form method="POST">
     {{ form.csrf_token }}
     <div class="mb-3">
+        {{ form.appointment.label(class="form-label") }}
+        {{ form.appointment(class="form-control", type="datetime-local") }}
+    </div>
+    <div class="mb-3">
         {{ form.vehicle_plate.label(class="form-label") }}
 <!--        <select class="form-select" name="vehicle_plate">-->
 <!--            {% for vehicle in vehicles %}-->
