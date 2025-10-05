@@ -1,6 +1,6 @@
 # Car Wash Management System
 
-A web-based system developed with Python/Flask for managing a car wash business, enabling control of customers, vehicles, services, and scheduling.
+A web-based system developed with Python/Flask for managing a car wash business, enabling control of customers, vehicles, services, and scheduling. This project was developed as the final project for the Full Stack Development Postgraduate course at PUCRS University (Pontifícia Universidade Católica do Rio Grande do Sul) and served as a learning experience in web development using Python and Flask.
 
 ## Features
 
