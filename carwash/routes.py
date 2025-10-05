@@ -116,6 +116,8 @@ def edit_user(user_id):
         database.session.commit()
 
         return redirect(url_for("users"))
+    else:
+        form.role.data = current_user_info.role
 
     return render_template("users/edit.html", user=current_user_info, form=form)
 
@@ -235,6 +237,9 @@ def booking_edit(id):
         })
         database.session.commit()
         return redirect(url_for("booking"))
+    else:
+        form.vehicle_plate.data = book.vehicle_plate
+
 
     if form.errors:
         print(f'Form errors: {form.errors}')

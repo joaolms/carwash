@@ -20,7 +20,11 @@
                         {{ form.owner.label(class="form-label") }}
                         <select class="form-select" name="owner">
                             {% for owner in owners %}
-                            <option value="{{ owner.id }}">{{ owner.name }}</option>
+                                {% if owner.id == vehicle.user_id %}
+                                    <option value="{{ owner.id }}" selected>{{ owner.name }}</option>
+                                {% else %}
+                                    <option value="{{ owner.id }}">{{ owner.name }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
