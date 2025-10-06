@@ -15,8 +15,8 @@ class FormNewUser(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(3, 12)])
     password = PasswordField("Password", validators=[DataRequired(), Length(6, 20)])
     password_confirmation = PasswordField("Password confirmation",
-                                          validators=[DataRequired(),
-                                          EqualTo("password", message="Passwords must match")])
+                                     validators=[DataRequired(),
+                                               EqualTo("password", message="Passwords must match")])
     phone_number = StringField("Phone number")
     role = SelectField("Role", choices=["User", "Admin"], validators=[DataRequired()])
     confirmation_button = SubmitField("Create")
