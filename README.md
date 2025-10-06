@@ -77,6 +77,10 @@ python main.py
 http://localhost:5001
 ```
 
+## Documentation
+
+For detailed information about the system's architecture, database design, user journey, and interface prototypes, please check our [Architecture Documentation](docs/ARCHITECTURE.md).
+
 ## Project Structure
 
 ```
@@ -87,6 +91,9 @@ carwash/
 │   ├── models.py        # Database models
 │   ├── routes.py        # Routes and controllers
 │   └── templates/       # HTML templates
+├── docs/                # Documentation
+│   ├── ARCHITECTURE.md  # System architecture documentation
+│   └── static/         # Documentation assets and diagrams
 ├── instance/            # SQLite database
 ├── requirements.txt     # Project dependencies
 ├── create_database.py   # DB initialization script
