@@ -1,11 +1,5 @@
-from tabnanny import check
-
-import wtforms
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, DateTimeField, SelectField, IntegerField, DecimalField
-from wtforms.fields import choices
-from wtforms.fields.choices import RadioField
-from wtforms.fields.simple import MultipleFileField
 from wtforms.validators import DataRequired, EqualTo, Length, ValidationError, Optional
 from carwash.models import User, Vehicle
 
@@ -20,7 +14,9 @@ class FormNewUser(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     username = StringField("Username", validators=[DataRequired(), Length(3, 12)])
     password = PasswordField("Password", validators=[DataRequired(), Length(6, 20)])
-    password_confirmation = PasswordField("Password confirmation", validators=[DataRequired(), EqualTo("password", message="Passwords must match")])
+    password_confirmation = PasswordField("Password confirmation",
+                                          validators=[DataRequired(),
+                                          EqualTo("password", message="Passwords must match")])
     phone_number = StringField("Phone number")
     role = SelectField("Role", choices=["User", "Admin"], validators=[DataRequired()])
     confirmation_button = SubmitField("Create")
@@ -59,6 +55,7 @@ class FormNewVehicle(FlaskForm):
         if vehicle:
             return ValidationError("Vehicle already exists.")
 
+
 class FormNewBooking(FlaskForm):
     vehicle_plate = SelectField("Vehicle", choices=[], validators=[DataRequired()])
     service_id = SelectField("Service", choices=[], validators=[DataRequired()])
@@ -71,6 +68,7 @@ class FormBookingEdit(FlaskForm):
     service_id = SelectField("Service", choices=[], validators=[DataRequired()])
     appointment = DateTimeField("Appointment", format='%Y-%m-%dT%H:%M', validators=[DataRequired()])
     update_button = SubmitField("Create")
+
 
 class FormVehicleEdit(FlaskForm):
     owner = StringField("Owner", validators=[DataRequired()])
@@ -88,3 +86,4 @@ class FormServiceEdit(FlaskForm):
     service = StringField("Service", validators=[DataRequired()])
     cost = DecimalField("Cost", rounding=None, validators=[DataRequired()])
     update_button = SubmitField("Update")
+

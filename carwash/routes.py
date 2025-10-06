@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired
 
 from carwash import app, database, bcrypt
 from carwash.models import User, Vehicle, Booking, Service
-from flask import render_template, url_for, redirect, flash,request
+from flask import render_template, url_for, redirect, flash, request
 from flask_login import login_required, login_user, logout_user, current_user
 from carwash.forms import FormLogin, FormNewUser, FormNewVehicle, FormNewBooking, FormNewService, FormEditUser, FormVehicleEdit, FormServiceEdit, FormBookingEdit
 from datetime import datetime, timezone
@@ -38,8 +38,8 @@ def login():
         user = User.query.filter_by(username=formlogin.username.data).first()
 
         # If user exist and the password is correct, logging user is accepted.
-        ## Compare the hash using bcrypt from password stored in database
-        ## and the password entered in the login form
+        # Compare the hash using bcrypt from password stored in database
+        # and the password entered in the login form
         if user and bcrypt.check_password_hash(user.password, formlogin.password.data):
             login_user(user, remember=True)
             return redirect(url_for("homepage"))
@@ -121,6 +121,7 @@ def edit_user(user_id):
 
     return render_template("users/edit.html", user=current_user_info, form=form)
 
+
 @app.route('/<int:user_id>/delete', methods=["GET", "POST", "PUT"])
 @login_required
 def delete_user(user_id):
@@ -139,10 +140,10 @@ def vehicles_new():
     if formnewvehicle.validate_on_submit():
 
         vehicle = Vehicle(
-            plate = formnewvehicle.plate.data,
-            model = formnewvehicle.model.data,
-            year = formnewvehicle.year.data,
-            user_id = formnewvehicle.owner.data,
+            plate=formnewvehicle.plate.data,
+            model=formnewvehicle.model.data,
+            year=formnewvehicle.year.data,
+            user_id=formnewvehicle.owner.data,
         )
 
         database.session.add(vehicle)
@@ -202,10 +203,10 @@ def schedules_new():
         created_at = datetime.now(timezone.utc)
 
         booking = Booking(
-            created_at = created_at,
-            vehicle_plate = formnewbooking.vehicle_plate.data,
-            service_id = formnewbooking.service_id.data,
-            appointment = formnewbooking.appointment.data
+            created_at=created_at,
+            vehicle_plate=formnewbooking.vehicle_plate.data,
+            service_id=formnewbooking.service_id.data,
+            appointment=formnewbooking.appointment.data
         )
 
         database.session.add(booking)
@@ -240,7 +241,6 @@ def booking_edit(id):
     else:
         form.vehicle_plate.data = book.vehicle_plate
 
-
     if form.errors:
         print(f'Form errors: {form.errors}')
 
@@ -271,8 +271,8 @@ def services_new():
     if formnewservice.validate_on_submit():
 
         service = Service(
-            service = formnewservice.service.data,
-            cost = formnewservice.cost.data
+            service=formnewservice.service.data,
+            cost=formnewservice.cost.data
         )
 
         database.session.add(service)
