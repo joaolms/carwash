@@ -28,7 +28,10 @@ class FormNewUser(FlaskForm):
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
-            return ValidationError("Username already exists.")
+            # If you use `return` here, the return will be from SQLite
+            # and this will show an error with the SQLite structure.
+            # Use `raise` instead of `return` to avoid this behavior.
+            raise ValidationError("Username already exists.")
 
 
 class FormEditUser(FlaskForm):
