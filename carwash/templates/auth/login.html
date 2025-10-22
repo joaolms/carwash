@@ -25,7 +25,8 @@
                     </div>
                 </form>
                 {%- for message in get_flashed_messages() %}
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="Close"></button>
                         {{ message }}
                     </div>
                 {%- endfor %}
